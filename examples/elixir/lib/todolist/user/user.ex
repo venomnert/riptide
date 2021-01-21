@@ -1,4 +1,6 @@
 defmodule Todolist.User do
+  import Riptide
+
   def info(key), do: Riptide.query_path!(["user:info", key])
 
   def from_email(email) do
@@ -14,6 +16,6 @@ defmodule Todolist.User do
 
   def password_set(user, password) do
     result = Bcrypt.add_hash(password)
-    Riptide.Mutation.merge(["user:password", user], result.password_hash)
+    merge(["user:password", user], result.password_hash)
   end
 end
