@@ -23,20 +23,20 @@ defmodule Todolist.Todo.Schema do
   use Riptide.Interceptor
   import Riptide.Schema
 
-  def mutation_before(["user:todos", _user, id], %{merge: merge = %{"id" => _}}, _mut, _state) do
+  def mutation_before(["user:todos", _user, _id], %{merge: merge = %{"id" => _}}, _mut, _state) do
     merge
-    |> validate_format(Todolist.Todo)
+    # |> validate_format(Todolist.Todo)
     |> validate_required(%{
       "id" => true,
       "text" => true
     })
-    |> check()
+    # |> check()
   end
 
-  def mutation_before(["user:todos", _user, id], %{merge: merge}, _mut, _state) do
+  def mutation_before(["user:todos", _user, _id], %{merge: merge}, _mut, _state) do
     merge
-    |> validate_format(Todolist.Todo)
-    |> check()
+    # |> validate_format(Todolist.Todo)
+    # |> check()
   end
 end
 
@@ -46,7 +46,7 @@ defmodule Todolist.Todo.Created do
   @doc """
   Appends a `created` timestamp and the `user` that owns it when the todo is first created
   """
-  def mutation_before(["user:todos", user, id], %{merge: %{"id" => _}}, _mut, _state) do
+  def mutation_before(["user:todos", user, _id], %{merge: %{"id" => _}}, _mut, _state) do
     {
       :merge,
       %{
@@ -67,14 +67,14 @@ defmodule Todolist.Todo.Alert do
   # been successfully written. It's useful for triggering side effects, like sending an SMS or
   # email
   def mutation_effect(
-        ["user:todos", _user, id],
+        ["user:todos", _user, _id],
         %{merge: %{"id" => key, "text" => text}},
         _mut,
         _state
       ),
       do: {:trigger, [key, text]}
 
-  def trigger(key, text) do
+  def trigger(_key, text) do
     Logger.info("Alert! Todo #{text} was created")
   end
 end
