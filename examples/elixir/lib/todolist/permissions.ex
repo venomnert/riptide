@@ -1,9 +1,9 @@
 defmodule Todolist.Permissions do
   use Riptide.Interceptor
 
-  def mutation_before([], _layer, mut, %{internal: true}), do: :ok
+  def mutation_before([], _layer, _mut, %{internal: true}), do: :ok
 
-  def mutation_before([], _layer, mut, state) do
+  def mutation_before([], _layer, _mut, _state) do
     # mut
     # |> Riptide.Mutation.layers()
     # |> Enum.any?(fn
